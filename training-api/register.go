@@ -42,33 +42,31 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 func writeTrainingData(trainingData TrainingData) error {
 	filePath := "./data/training.json"
 
-	// Read existing data from the JSON file
-	existingData, err := os.ReadFile(filePath)
+	// Open the JSON file
+	file, err := os.Open(filePath)
 	if err != nil {
 		return err
 	}
+	defer file.Close()
 
+	// Read the existing data from the JSON file
 	var trainingDataArray []TrainingData
-
-	if len(existingData) > 0 {
-		// Parse the existing data into a slice
-		err = json.Unmarshal(existingData, &trainingDataArray)
-		if err != nil {
-			return err
-		}
+	err = json.NewDecoder(file).Decode(&trainingDataArray)
+	if err != nil && err != io.EOF {
+		return err
 	}
 
 	// Append the new training data to the array
 	trainingDataArray = append(trainingDataArray, trainingData)
 
-	// Convert the updated array to JSON
-	updatedData, err := json.Marshal(trainingDataArray)
+	// Write the updated training data to the JSON file
+	file, err = os.Create(filePath)
 	if err != nil {
 		return err
 	}
+	defer file.Close()
 
-	// Write the updated data to the JSON file
-	err = os.WriteFile(filePath, updatedData, 0644)
+	err = json.NewEncoder(file).Encode(trainingDataArray)
 	if err != nil {
 		return err
 	}

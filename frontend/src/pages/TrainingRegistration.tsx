@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from '../axiosConfig';
 
 const TrainingRegistration: React.FC = () => {
   const [date, setDate] = useState('');
@@ -26,9 +27,9 @@ const TrainingRegistration: React.FC = () => {
     setDate(today);
   }, []);
 
-  const handleFormSubmit = (event: React.FormEvent) => {
+  const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
+  
     const trainingData = {
       date,
       site,
@@ -38,14 +39,22 @@ const TrainingRegistration: React.FC = () => {
       reps,
       remarks,
     };
-
-    // Convert the trainingData object to JSON
-    const jsonData = JSON.stringify(trainingData);
-
-    // Write the JSON data to the /data/training.json file (you may need server-side implementation for this)
-    // For this example, we'll log the JSON data to the console
-    console.log(jsonData);
-
+  
+    try {
+      const response = await axios.post('/register', trainingData);
+  
+      if (response.status === 200) {
+        // Training data registered successfully
+        console.log('Training data registered successfully.');
+      } else {
+        // Handle error response
+        console.log('Failed to register training data.');
+      }
+    } catch (error) {
+      // Handle error
+      console.log('An error occurred while registering training data:', error);
+    }
+  
     // Clear the form inputs
     setDate(getToday());
     setSite('');
@@ -66,6 +75,8 @@ const TrainingRegistration: React.FC = () => {
       <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
       <input
           type="date"
+          id="date"
+          name="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           className="px-4 py-2 rounded"
@@ -73,6 +84,8 @@ const TrainingRegistration: React.FC = () => {
         />
         <input
           type="text"
+          id="site"
+          name="site"
           value={site}
           onChange={(e) => setSite(e.target.value)}
           placeholder="Site"
@@ -81,6 +94,8 @@ const TrainingRegistration: React.FC = () => {
         />
         <input
           type="text"
+          id="discipline"
+          name="discipline"
           value={discipline}
           onChange={(e) => setDiscipline(e.target.value)}
           placeholder="Discipline"
@@ -89,6 +104,8 @@ const TrainingRegistration: React.FC = () => {
         />
         <input
           type="number"
+          id="sets"
+          name="sets"
           value={sets}
           onChange={(e) => setSets(e.target.value)}
           placeholder="Number of Sets"
@@ -97,6 +114,8 @@ const TrainingRegistration: React.FC = () => {
         />
         <input
           type="number"
+          id="weight"
+          name="weight"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
           placeholder="Weight"
@@ -105,6 +124,8 @@ const TrainingRegistration: React.FC = () => {
         />
         <input
           type="number"
+          id="reps"
+          name="reps"
           value={reps}
           onChange={(e) => setReps(e.target.value)}
           placeholder="Number of Reps"
@@ -113,6 +134,8 @@ const TrainingRegistration: React.FC = () => {
         />
         <input
           type="text"
+          id="remarks"
+          name="remarks"
           value={remarks}
           onChange={(e) => setRemarks(e.target.value)}
           placeholder="Remarks"
