@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../axiosConfig';
+interface TrainingRecord {
+  date: string;
+  part: string;
+  discipline: string;
+  sets: number;
+  weight: number;
+  reps: number;
+  remarks: string;
+};
 
 const TrainingRecordReference = () => {
-  type TrainingRecord = {
-    date: string;
-    part: string;
-    discipline: string;
-    sets: number;
-    weight: number;
-    reps: number;
-    remarks: string;
-  };
   const [trainingRecords, setTrainingRecords] = useState<TrainingRecord[]>([]);
 
   const navigate = useNavigate();

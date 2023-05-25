@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../axiosConfig";
+interface MenuData {
+  part: string;
+  discipline: string;
+};
 
 const TrainingMenuReference: React.FC = () => {
-  type MenuData = {
-    part: string;
-    discipline: string;
-  };
   const [menuData, setMenuData] = useState<MenuData[]>([]);
 
   const navigate = useNavigate();
