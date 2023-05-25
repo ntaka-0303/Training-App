@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { StartButton } from "./Components/movePageButtonComponents";
 import axios from '../axiosConfig';
 
 const TrainingMenuSetting: React.FC = () => {
   const [part, setPart] = useState('');
   const [discipline, setDiscipline] = useState('');
-  const navigate = useNavigate();
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -31,10 +30,6 @@ const TrainingMenuSetting: React.FC = () => {
     }
   };
 
-  const handleReturnToMenu = () => {
-    navigate('/');
-  };
-
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-4xl font-bold mb-8">Menu Setup</h1>
@@ -57,9 +52,7 @@ const TrainingMenuSetting: React.FC = () => {
           Submit
         </button>
       </form>
-      <button onClick={handleReturnToMenu} className="px-4 py-2 mt-4 bg-gray-300 hover:bg-gray-400 rounded">
-        Return to Menu
-      </button>
+      <StartButton/>
     </div>
   );
 };

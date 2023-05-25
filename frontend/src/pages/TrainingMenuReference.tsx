@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "../axiosConfig";
-interface MenuData {
-  part: string;
-  discipline: string;
-};
+import { MenuData } from "./types/MenuData";
+import { StartButton } from "./Components/movePageButtonComponents";
+
 
 const TrainingMenuReference: React.FC = () => {
   const [menuData, setMenuData] = useState<MenuData[]>([]);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchMenuData();
@@ -23,10 +19,6 @@ const TrainingMenuReference: React.FC = () => {
     } catch (error) {
       console.error("Error fetching menu data:", error);
     }
-  };
-
-  const handleReturnToMenu = () => {
-    navigate("/");
   };
 
   return (
@@ -48,9 +40,7 @@ const TrainingMenuReference: React.FC = () => {
           ))}
         </tbody>
       </table>
-      <button onClick={handleReturnToMenu} className="px-4 py-2 mt-4 bg-gray-300 hover:bg-gray-400 rounded">
-        Return to Menu
-      </button>
+      <StartButton />
     </div>
   );
 };

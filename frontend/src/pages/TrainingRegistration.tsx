@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { StartButton, RegisterButton, TrainingMenuSettingButton } from "./Components/movePageButtonComponents";
 import axios from '../axiosConfig';
-
-interface MenuData {
-  part: string;
-  discipline: string;
-}
+import { MenuData } from './types/MenuData';
+import { getToday } from './utilFunc';
 
 const TrainingRegistration: React.FC = () => {
   const [date, setDate] = useState('');
@@ -16,17 +13,6 @@ const TrainingRegistration: React.FC = () => {
   const [reps, setReps] = useState('');
   const [remarks, setRemarks] = useState('');
   const [menuData, setMenuData] = useState<MenuData[]>([]);
-
-  const navigate = useNavigate();
-
-  function getToday(): string {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-    const yyyy = today.getFullYear();
-    const todayDate = yyyy + '-' + mm + '-' + dd;
-    return todayDate;
-  }
 
   useEffect(() => {
     const today = getToday();
@@ -76,13 +62,9 @@ const TrainingRegistration: React.FC = () => {
     }
   };
 
-  const handleReturnToMenu = () => {
-    navigate('/');
-  };
-
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold mb-8">Training Registration</h1>
+      <h1 className="text-4xl font-bold mb-8">Registration</h1>
       <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
         <input
           type="date"
@@ -162,16 +144,10 @@ const TrainingRegistration: React.FC = () => {
           placeholder="Remarks"
           className="px-4 py-2 rounded"
         />
-        <button type="submit" className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded">
-          Register
-        </button>
+        <RegisterButton/>
       </form>
-      <button
-        onClick={handleReturnToMenu}
-        className="px-4 py-2 mt-4 bg-gray-300 hover:bg-gray-400 rounded"
-      >
-        Return to Menu
-      </button>
+      <TrainingMenuSettingButton/>
+      <StartButton/>
     </div>
   );
 };

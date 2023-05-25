@@ -1,41 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { StartButton } from './Components/movePageButtonComponents';
 import axios from '../axiosConfig';
-interface TrainingRecord {
-  date: string;
-  part: string;
-  discipline: string;
-  sets: number;
-  weight: number;
-  reps: number;
-  remarks: string;
-};
+import { TrainingData } from './types/TrainingData';
 
-const TrainingRecordReference = () => {
-  const [trainingRecords, setTrainingRecords] = useState<TrainingRecord[]>([]);
-
-  const navigate = useNavigate();
+const TrainingDataReference = () => {
+  const [trainingRecords, setTrainingDatas] = useState<TrainingData[]>([]);
 
   useEffect(() => {
-    fetchTrainingRecords();
+    fetchTrainingDatas();
   }, []);
 
-  const fetchTrainingRecords = async () => {
+  const fetchTrainingDatas = async () => {
     try {
       const response = await axios.get('/getTraining');
-      setTrainingRecords(response.data);
+      setTrainingDatas(response.data);
     } catch (error) {
       console.error('Error fetching training records:', error);
     }
   };
 
-  const handleReturnToMenu = () => {
-    navigate('/');
-  };
-
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold mb-8">Training Record Reference</h1>
+      <h1 className="text-4xl font-bold mb-8">Record Reference</h1>
       <table className="min-w-max bg-white border rounded-lg overflow-hidden">
         <thead>
           <tr className="bg-indigo-500 text-white rounded uppercase text-sm leading-normal">
@@ -62,11 +48,9 @@ const TrainingRecordReference = () => {
           ))}
         </tbody>
       </table>
-      <button onClick={handleReturnToMenu} className="px-4 py-2 mt-4 bg-gray-300 hover:bg-gray-400 rounded">
-        Return to Menu
-      </button>
+      <StartButton/>
     </div>
   );
 };
 
-export default TrainingRecordReference;
+export default TrainingDataReference;
