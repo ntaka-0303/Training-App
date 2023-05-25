@@ -48,11 +48,11 @@ const TrainingRegistration: React.FC = () => {
         console.log('Training data registered successfully.');
       } else {
         // Handle error response
-        console.log('Failed to register training data.');
+        console.error('Failed to register training data.');
       }
     } catch (error) {
       // Handle error
-      console.log('An error occurred while registering training data:', error);
+      console.error('An error occurred while registering training data:', error);
     }
   
     // Clear the form inputs

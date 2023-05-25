@@ -9,7 +9,6 @@ import (
 	"os"
 )
 
-type GetRegisterHandler struct{}
 type TrainingData struct {
 	Date       string `json:"date"`
 	Site       string `json:"site"`
@@ -22,18 +21,21 @@ type TrainingData struct {
 
 const filePath = "./data/training.json"
 
-func registerHandler(w http.ResponseWriter, r *http.Request) {
+func register(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var trainingData TrainingData
-	if err := json.NewDecoder(r.Body).Decode(&trainingData); err != nil {
+	err := json.NewDecoder(r.Body).Decode(&trainingData)
+	if err != nil {
+		log.Fatal(err)
 		http.Error(w, "Error decoding request body", http.StatusBadRequest)
 		return
 	}
 
 	// Write the training data to the JSON file
-	if err := writeTrainingData(trainingData); err != nil {
-		log.Println("Error writing training data:", err)
+	err = writeTrainingData(trainingData)
+	if err != nil {
+		log.Fatal("Error writing training data:", err)
 		http.Error(w, "Error writing training data", http.StatusInternalServerError)
 		return
 	}
@@ -73,4 +75,34 @@ func writeTrainingData(trainingData TrainingData) error {
 	}
 
 	return nil
+}
+
+func get(w http.ResponseWriter, r *http.Request) {
+
+	// Open the JSON file
+	file, err := os.Open(filePath)
+	if err != nil {
+		log.Fatal(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	defer file.Close()
+
+	// Read the training records from the JSON file
+	var trainingRecords []TrainingData
+	err = json.NewDecoder(file).Decode(&trainingRecords)
+	if err != nil {
+		log.Fatal(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	// Send the training records as a JSON response
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(trainingRecords)
+	if err != nil {
+		log.Fatal(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 }

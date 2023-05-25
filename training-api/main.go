@@ -11,7 +11,10 @@ func main() {
 	mux := http.NewServeMux()
 
 	// Register API handler
-	mux.HandleFunc("/register", registerHandler)
+	mux.HandleFunc("/register", register)
+
+	// Get API handler
+	mux.HandleFunc("/get", get)
 
 	c := cors.AllowAll()
 	handler := c.Handler(mux)
