@@ -10,6 +10,7 @@ const TrainingDataReference = () => {
     fetchTrainingDatas();
   }, []);
 
+  // トレーニングデータを取得
   const fetchTrainingDatas = async () => {
     try {
       const response = await axios.get('/getTraining');
@@ -21,17 +22,17 @@ const TrainingDataReference = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold mb-8">Record Reference</h1>
+      <h1 className="text-4xl font-bold mb-8">記録参照</h1>
       <table className="min-w-max bg-white border rounded-lg overflow-hidden">
         <thead>
           <tr className="bg-indigo-500 text-white rounded uppercase text-sm leading-normal">
-            <th className="py-3 px-6 text-left">Date</th>
-            <th className="py-3 px-6 text-left">Part</th>
-            <th className="py-3 px-6 text-left">Discipline</th>
-            <th className="py-3 px-6 text-left">Sets</th>
-            <th className="py-3 px-6 text-left">Weight</th>
-            <th className="py-3 px-6 text-left">Reps</th>
-            <th className="py-3 px-6 text-left">Remarks</th>
+            <th className="py-3 px-6 text-left">日付</th>
+            <th className="py-3 px-6 text-left">部位</th>
+            <th className="py-3 px-6 text-left">種目</th>
+            <th className="py-3 px-6 text-left">セット数</th>
+            <th className="py-3 px-6 text-left">重量</th>
+            <th className="py-3 px-6 text-left">レップ数</th>
+            <th className="py-3 px-6 text-left">備考</th>
           </tr>
         </thead>
         <tbody className="text-gray-600 text-sm font-light">

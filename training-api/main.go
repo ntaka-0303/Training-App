@@ -10,16 +10,16 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	// Register Training API
+	// トレーニング記録API
 	mux.HandleFunc("/registerTraining", registerTraining)
 
-	// Get Training API
+	// トレーニング取得API
 	mux.HandleFunc("/getTraining", getTraining)
 
-	// Set Menu API
+	// メニュー設定API
 	mux.HandleFunc("/setMenu", setMenu)
 
-	// Get Menu API
+	// メニュー取得API
 	mux.HandleFunc("/getMenu", getMenu)
 
 	c := cors.AllowAll()

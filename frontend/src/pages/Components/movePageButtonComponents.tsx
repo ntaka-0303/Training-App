@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+// スタート画面へ戻るボタン
 export const StartButton: React.FC = () => {
   const navigate = useNavigate();
 
@@ -10,19 +11,21 @@ export const StartButton: React.FC = () => {
 
   return (
   <button onClick={handleStartClick} className="px-4 py-2 mt-4 bg-gray-300 hover:bg-gray-400 rounded">
-    Return to Start
+    戻る
   </button>
   );
 };
 
+// 登録ボタン
 export const RegisterButton: React.FC = () => {
   return (
     <button type="submit" className="px-4 py-2 bg-indigo-900 hover:bg-indigo-600 text-white rounded">
-      Register
+      登録
     </button>
   );
 };
 
+// トレーニング登録画面へ移動するボタン
 export const TrainingRegistrationButton: React.FC = () => {
   const navigate = useNavigate();
 
@@ -32,11 +35,12 @@ export const TrainingRegistrationButton: React.FC = () => {
 
   return (
     <button className="px-4 py-2 mt-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded" onClick={handleTrainingRegistrationClick}>
-      Training Registration
+      トレーニング登録
     </button>
   );
 };
 
+// トレーニング記録参照画面へ移動するボタン
 export const TrainingRecordReferenceButton: React.FC = () => {
   const navigate = useNavigate();
 
@@ -46,11 +50,12 @@ export const TrainingRecordReferenceButton: React.FC = () => {
 
   return (
     <button className="px-4 py-2 mt-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded" onClick={handleTrainingRecordReferenceClick}>
-      Training Record Reference
+      トレーニング記録参照
     </button>
   );
 };
 
+// トレーニングメニュー設定画面へ移動するボタン
 export const TrainingMenuSettingButton: React.FC = () => {
   const navigate = useNavigate();
 
@@ -60,11 +65,12 @@ export const TrainingMenuSettingButton: React.FC = () => {
 
   return (
     <button className="px-4 py-2 mt-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded" onClick={handleTrainingMenuSettingClick}>
-      Training Menu Setting
+      トレーニングメニュー設定
     </button>
   );
 };
 
+// トレーニングメニュー参照画面へ移動するボタン
 export const TrainingMenuReferenceButton: React.FC = () => {
   const navigate = useNavigate();
 
@@ -74,7 +80,7 @@ export const TrainingMenuReferenceButton: React.FC = () => {
 
   return (
     <button className="px-4 py-2 mt-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded" onClick={handleTrainingMenuReferenceClick}>
-      Training Menu Reference
+      トレーニングメニュー参照
     </button>
   );
 };

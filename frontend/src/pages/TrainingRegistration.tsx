@@ -18,9 +18,11 @@ const TrainingRegistration: React.FC = () => {
     const today = getToday();
     setDate(today);
 
+    // メニューデータを取得し、セット
     const fetchMenuData = async () => {
       try {
-        const response = await axios.get<MenuData[]>('/getMenu');
+        // トレーニングAPIからメニューデータを取得
+        const response = await axios.get('/getMenu');
         setMenuData(response.data);
       } catch (error) {
         console.error('Error fetching menu data:', error);
@@ -44,9 +46,10 @@ const TrainingRegistration: React.FC = () => {
     };
 
     try {
+      //　トレーニングデータを登録
       await axios.post('/registerTraining', trainingData);
 
-      // Clear the form inputs
+      // インプットをリセット
       setDate(getToday());
       setPart('');
       setDiscipline('');
@@ -57,14 +60,14 @@ const TrainingRegistration: React.FC = () => {
 
       console.log('Training data registered successfully.');
     } catch (error) {
-      // Handle error
+      // エラー処理
       console.error('An error occurred while registering training data:', error);
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold mb-8">Registration</h1>
+      <h1 className="text-4xl font-bold mb-8">登録</h1>
       <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
         <input
           type="date"
@@ -83,7 +86,7 @@ const TrainingRegistration: React.FC = () => {
           className="px-4 py-2 rounded"
           required
         >
-          <option value="">Select Part</option>
+          <option value="">部位を選択</option>
           {Array.from(new Set(menuData.map((item) => item.part))).map((part, index) => (
             <option key={index} value={part}>
               {part}
@@ -98,7 +101,7 @@ const TrainingRegistration: React.FC = () => {
           className="px-4 py-2 rounded"
           required
         >
-          <option value="">Select Discipline</option>
+          <option value="">種目を選択</option>
             {Array.from(new Set(menuData.filter(item => item.part === part).map(item => item.discipline))).map((discipline, index) => (
               <option key={index} value={discipline}>
                 {discipline}
@@ -111,7 +114,7 @@ const TrainingRegistration: React.FC = () => {
           name="sets"
           value={sets}
           onChange={(e) => setSets(e.target.value)}
-          placeholder="Number of Sets"
+          placeholder="セット数"
           className="px-4 py-2 rounded"
           required
         />
@@ -121,7 +124,7 @@ const TrainingRegistration: React.FC = () => {
           name="weight"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
-          placeholder="Weight"
+          placeholder="重量"
           className="px-4 py-2 rounded"
           required
         />
@@ -131,7 +134,7 @@ const TrainingRegistration: React.FC = () => {
           name="reps"
           value={reps}
           onChange={(e) => setReps(e.target.value)}
-          placeholder="Number of Reps"
+          placeholder="レップ数"
           className="px-4 py-2 rounded"
           required
         />
@@ -141,7 +144,7 @@ const TrainingRegistration: React.FC = () => {
           name="remarks"
           value={remarks}
           onChange={(e) => setRemarks(e.target.value)}
-          placeholder="Remarks"
+          placeholder="備考"
           className="px-4 py-2 rounded"
         />
         <RegisterButton/>

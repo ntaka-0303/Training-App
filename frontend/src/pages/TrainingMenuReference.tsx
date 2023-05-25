@@ -11,7 +11,7 @@ const TrainingMenuReference: React.FC = () => {
     fetchMenuData();
   }, []);
 
-  // Fetch the menu data from the API
+  // トレーニングAPIのメニュー取得からメニューデータを取得
   const fetchMenuData = async () => {
     try {
       const response = await axios.get("/getMenu");
@@ -23,12 +23,12 @@ const TrainingMenuReference: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold mb-8">Menu Reference</h1>
+      <h1 className="text-4xl font-bold mb-8">メニュー参照</h1>
       <table className="min-w-max bg-white border rounded-lg overflow-hidden">
         <thead>
           <tr className="bg-indigo-500 text-white rounded uppercase text-sm leading-normal">
-            <th className="px-4 py-2 text-white bg-blue-500">Site</th>
-            <th className="px-4 py-2 text-white bg-blue-500">Species</th>
+            <th className="px-4 py-2 text-white bg-blue-500">部位</th>
+            <th className="px-4 py-2 text-white bg-blue-500">種目</th>
           </tr>
         </thead>
         <tbody className="text-gray-600 text-sm font-light">

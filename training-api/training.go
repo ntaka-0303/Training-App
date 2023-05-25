@@ -21,7 +21,7 @@ type TrainingData struct {
 const trainingFilePath = "./data/training.json"
 
 func registerTraining(w http.ResponseWriter, r *http.Request) {
-	// Decode the request body into a TrainingData struct
+	// トレーニングデータをJSONとしてデコード
 	var trainingData TrainingData
 	err := json.NewDecoder(r.Body).Decode(&trainingData)
 	if err != nil {
@@ -30,7 +30,7 @@ func registerTraining(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Read the existing data from the JSON file
+	// ファイルから既存のトレーニングデータを読み込む
 	existingTrainingDataArray, err := readTraining()
 	if err != nil {
 		log.Fatal(err)
@@ -38,10 +38,10 @@ func registerTraining(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Append the new training data to the array
+	// 既存のトレーニングデータに新しいトレーニングデータを追加
 	trainingDataArray := append(existingTrainingDataArray, trainingData)
 
-	// Write the updated training data to the JSON file
+	// ファイルにトレーニングデータを書き込む
 	err = writeTraining(trainingDataArray)
 	if err != nil {
 		log.Fatal(err)
@@ -53,7 +53,7 @@ func registerTraining(w http.ResponseWriter, r *http.Request) {
 }
 
 func getTraining(w http.ResponseWriter, r *http.Request) {
-	// Read the training records from the JSON file
+	// ファイルからトレーニングデータを読み込む
 	trainingRecords, err := readTraining()
 	if err != nil {
 		log.Fatal(err)
@@ -61,7 +61,7 @@ func getTraining(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Send the training records as a JSON response
+	// トレーニングデータをJSONとしてエンコードしてレスポンスボディに書き込む
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(trainingRecords)
 	if err != nil {
@@ -72,14 +72,14 @@ func getTraining(w http.ResponseWriter, r *http.Request) {
 }
 
 func readTraining() ([]TrainingData, error) {
-	// Open the JSON file
+	// ファイルを開く
 	file, err := os.Open(trainingFilePath)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
 
-	// Read the training records from the JSON file
+	// ファイルの中身をJSONとしてデコード
 	var trainingRecords []TrainingData
 	err = json.NewDecoder(file).Decode(&trainingRecords)
 	if err != nil {
@@ -90,14 +90,14 @@ func readTraining() ([]TrainingData, error) {
 }
 
 func writeTraining(trainingRecords []TrainingData) error {
-	// Open the JSON file
+	// ファイルを新規作成または上書きで開く
 	file, err := os.Create(trainingFilePath)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	// Write the updated training data to the JSON file
+	// トレーニングデータをJSONとしてエンコードしてファイルに書き込む
 	err = json.NewEncoder(file).Encode(trainingRecords)
 	if err != nil {
 		return err

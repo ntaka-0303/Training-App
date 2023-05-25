@@ -17,7 +17,7 @@ type MenuData struct {
 const menuFilePath = "./data/menu.json"
 
 func setMenu(w http.ResponseWriter, r *http.Request) {
-	// Decode the request body into a MenuData struct
+	// リクエストボディをJSONとしてデコード
 	var menuData MenuData
 	err := json.NewDecoder(r.Body).Decode(&menuData)
 	if err != nil {
@@ -26,7 +26,7 @@ func setMenu(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Read the existing data from the JSON file
+	// ファイルから既存のメニューデータを読み込む
 	existingMenuDataArray, err := readMenu()
 	if err != nil {
 		log.Fatal(err)
@@ -34,10 +34,10 @@ func setMenu(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Append the new menu data to the array
+	// 既存のメニューデータに新しいメニューデータを追加
 	menuDataArray := append(existingMenuDataArray, menuData)
 
-	// Write the updated menu data to the JSON file
+	// ファイルにメニューデータを書き込む
 	err = writeMenu(menuDataArray)
 	if err != nil {
 		log.Fatal(err)
@@ -49,7 +49,7 @@ func setMenu(w http.ResponseWriter, r *http.Request) {
 }
 
 func getMenu(w http.ResponseWriter, r *http.Request) {
-	// Read the existing data from the JSON file
+	// ファイルからメニューデータを読み込む
 	menuDataArray, err := readMenu()
 	if err != nil {
 		log.Fatal(err)
@@ -57,7 +57,7 @@ func getMenu(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Encode the menu data array into JSON
+	// メニューデータをJSONとしてエンコードしてレスポンスボディに書き込む
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(menuDataArray)
 	if err != nil {
@@ -68,14 +68,14 @@ func getMenu(w http.ResponseWriter, r *http.Request) {
 }
 
 func readMenu() ([]MenuData, error) {
-	// Open the menu file
+	// メニューファイルを開く
 	file, err := os.OpenFile(menuFilePath, os.O_RDONLY|os.O_CREATE, 0664)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
 
-	// Read the existing data from the JSON file
+	// ファイルのデータをJSONとしてデコード
 	var menuDataArray []MenuData
 	err = json.NewDecoder(file).Decode(&menuDataArray)
 	if err != nil && err != io.EOF {
@@ -86,14 +86,14 @@ func readMenu() ([]MenuData, error) {
 }
 
 func writeMenu(menuDataArray []MenuData) error {
-	// Open the menu file
+	// メニューファイルを新規作成または上書きで開く
 	file, err := os.Create(menuFilePath)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	// Write the updated menu data to the JSON file
+	// メニューデータをJSONとしてエンコードしてファイルに書き込む
 	err = json.NewEncoder(file).Encode(menuDataArray)
 	if err != nil {
 		return err
