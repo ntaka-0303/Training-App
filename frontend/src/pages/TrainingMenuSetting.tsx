@@ -32,7 +32,7 @@ const TrainingMenuSetting: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold mb-8">メニュー設定</h1>
+      <h1 className="text-4xl font-bold mb-8">トレーニングメニュー設定</h1>
       <form onSubmit={handleFormSubmit} className="flex flex-col gap-4">
         <input
           type="text"

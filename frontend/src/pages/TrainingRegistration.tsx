@@ -13,24 +13,43 @@ const TrainingRegistration: React.FC = () => {
   const [reps, setReps] = useState('');
   const [remarks, setRemarks] = useState('');
   const [menuData, setMenuData] = useState<MenuData[]>([]);
+  const [allParts ,setAllParts] = useState<string[]>([]);
+  const [disciplinesSelectedPart, setDisciplinesSelectedPart] = useState<string[]>([]);
 
+  // 初回レンダリング時に実行
   useEffect(() => {
-    const today = getToday();
-    setDate(today);
-
-    // メニューデータを取得し、セット
-    const fetchMenuData = async () => {
-      try {
-        // トレーニングAPIからメニューデータを取得
-        const response = await axios.get('/getMenu');
-        setMenuData(response.data);
-      } catch (error) {
-        console.error('Error fetching menu data:', error);
-      }
-    };
-
+    // 今日の日付をセット
+    setDate(getToday());
+    // トレーニングAPIからメニューデータを取得
     fetchMenuData();
+
+    // メニューデータから部位のみを抽出し、重複を削除してセット
+
   }, []);
+
+  // トレーニングAPIのメニュー取得からメニューデータを取得
+  const fetchMenuData = async () => {
+    try {
+      const response = await axios.get('/getMenu');
+      setMenuData(response.data);
+    } catch (error) {
+      console.error('Error fetching menu data:', error);
+    }
+  };
+
+  // メニューデータが変更されたら、部位に紐づく種目をセット
+  useEffect(() => {
+    const allParts = Array.from(new Set(menuData.map((item) => item.part)));
+    setAllParts(allParts);
+  }, [menuData]);
+
+
+  // メニューデータまたは部位が変更されたら、選択されている部位に紐づく種目をセット
+  useEffect(() => {
+    const disciplinesSelectedPart = Array.from(new Set(menuData.filter(item => item.part === part).map(item => item.discipline)));
+    setDisciplinesSelectedPart(disciplinesSelectedPart);
+  }, [menuData, part]);
+
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -67,7 +86,7 @@ const TrainingRegistration: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold mb-8">登録</h1>
+      <h1 className="text-4xl font-bold mb-8">トレーニング記録</h1>
       <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
         <input
           type="date"
@@ -87,7 +106,7 @@ const TrainingRegistration: React.FC = () => {
           required
         >
           <option value="">部位を選択</option>
-          {Array.from(new Set(menuData.map((item) => item.part))).map((part, index) => (
+          {allParts.map((part, index) => (
             <option key={index} value={part}>
               {part}
             </option>
@@ -102,7 +121,7 @@ const TrainingRegistration: React.FC = () => {
           required
         >
           <option value="">種目を選択</option>
-            {Array.from(new Set(menuData.filter(item => item.part === part).map(item => item.discipline))).map((discipline, index) => (
+            {disciplinesSelectedPart.map((discipline, index) => (
               <option key={index} value={discipline}>
                 {discipline}
               </option>
