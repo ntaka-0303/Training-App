@@ -24,9 +24,9 @@ const TrainingDataReference = () => {
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-4xl font-bold mb-8">トレーニング記録参照</h1>
       <div className="overflow-y-scroll max-h-80">
-        <table className="min-w-max bg-white border rounded-lg overflow-hidden">
+        <table className="min-w-max bg-white border rounded-lg">
           <thead>
-            <tr className="bg-indigo-500 text-white rounded uppercase text-sm leading-normal">
+            <tr className="sticky top-0 bg-indigo-500 text-white rounded uppercase text-sm leading-normal">
               <th className="py-3 px-6 text-left">日付</th>
               <th className="py-3 px-6 text-left">部位</th>
               <th className="py-3 px-6 text-left">種目</th>

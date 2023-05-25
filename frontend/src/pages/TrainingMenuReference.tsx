@@ -58,11 +58,15 @@ const TrainingMenuReference: React.FC = () => {
         <StartButton />
       </div>
       <div className="overflow-y-scroll max-h-80">
-        <table className="min-w-max bg-white border rounded-lg overflow-hidden">
+        <table className="min-w-max table-fixed bg-white border rounded-lg">
+          <colgroup>
+            <col className="w-1/2" />
+            <col className="w-1/2" />
+          </colgroup>
           <thead>
-            <tr className="bg-indigo-500 text-white rounded uppercase text-sm leading-normal">
-              <th className="px-4 py-2 text-white bg-blue-500">部位</th>
-              <th className="px-4 py-2 text-white bg-blue-500">種目</th>
+            <tr className="sticky top-0 bg-indigo-500 text-white rounded uppercase text-sm leading-normal">
+              <th className="px-4 py-2">部位</th>
+              <th className="px-4 py-2">種目</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
