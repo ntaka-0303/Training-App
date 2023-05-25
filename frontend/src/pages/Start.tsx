@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const Menu = () => {
+const Start = () => {
     const navigate = useNavigate();
   
     const handleTrainingRegistrationClick = () => {
@@ -12,8 +12,8 @@ const Menu = () => {
       navigate('/training-record-reference');
     };
 
-    const handleDisciplineSettingClick = () => {
-      navigate('/discipline-setting');
+    const handleTrainingMenuSettingClick = () => {
+      navigate('training-menu-setting');
     };
   
     return (
@@ -26,12 +26,12 @@ const Menu = () => {
           <button className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded" onClick={handleTrainingRecordReferenceClick}>
             Training Record Reference
           </button>
-          <button className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded" onClick={handleDisciplineSettingClick}>
-            Discipline Setting
+          <button className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded" onClick={handleTrainingMenuSettingClick}>
+            Training Menu Setting
           </button>
         </div>
       </div>
     );
 }
 
-export default Menu;
+export default Start;

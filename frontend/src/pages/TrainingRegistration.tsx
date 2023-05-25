@@ -4,7 +4,7 @@ import axios from '../axiosConfig';
 
 const TrainingRegistration: React.FC = () => {
   const [date, setDate] = useState('');
-  const [site, setSite] = useState('');
+  const [part, setPart] = useState('');
   const [discipline, setDiscipline] = useState('');
   const [sets, setSets] = useState('');
   const [weight, setWeight] = useState('');
@@ -32,7 +32,7 @@ const TrainingRegistration: React.FC = () => {
   
     const trainingData = {
       date,
-      site,
+      part,
       discipline,
       sets,
       weight,
@@ -41,28 +41,23 @@ const TrainingRegistration: React.FC = () => {
     };
   
     try {
-      const response = await axios.post('/register', trainingData);
+      const response = await axios.post('/registerTraining', trainingData);
+
+      // Clear the form inputs
+      setDate(getToday());
+      setPart('');
+      setDiscipline('');
+      setSets('');
+      setWeight('');
+      setReps('');
+      setRemarks('');
   
-      if (response.status === 200) {
-        // Training data registered successfully
-        console.log('Training data registered successfully.');
-      } else {
-        // Handle error response
-        console.error('Failed to register training data.');
-      }
+      console.log('Training data registered successfully.');
+      
     } catch (error) {
       // Handle error
       console.error('An error occurred while registering training data:', error);
     }
-  
-    // Clear the form inputs
-    setDate(getToday());
-    setSite('');
-    setDiscipline('');
-    setSets('');
-    setWeight('');
-    setReps('');
-    setRemarks('');
   };
 
   const handleReturnToMenu = () => {
@@ -84,11 +79,11 @@ const TrainingRegistration: React.FC = () => {
         />
         <input
           type="text"
-          id="site"
-          name="site"
-          value={site}
-          onChange={(e) => setSite(e.target.value)}
-          placeholder="Site"
+          id="part"
+          name="part"
+          value={part}
+          onChange={(e) => setPart(e.target.value)}
+          placeholder="Part"
           className="px-4 py-2 rounded"
           required
         />

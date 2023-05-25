@@ -5,7 +5,7 @@ import axios from '../axiosConfig';
 const TrainingRecordReference = () => {
   type TrainingRecord = {
     date: string;
-    site: string;
+    part: string;
     discipline: string;
     sets: number;
     weight: number;
@@ -22,7 +22,7 @@ const TrainingRecordReference = () => {
 
   const fetchTrainingRecords = async () => {
     try {
-      const response = await axios.get('/get');
+      const response = await axios.get('/getTraining');
       setTrainingRecords(response.data);
     } catch (error) {
       console.error('Error fetching training records:', error);
@@ -40,7 +40,7 @@ const TrainingRecordReference = () => {
         <thead>
           <tr className="bg-indigo-500 text-white rounded uppercase text-sm leading-normal">
             <th className="py-3 px-6 text-left">Date</th>
-            <th className="py-3 px-6 text-left">Site</th>
+            <th className="py-3 px-6 text-left">Part</th>
             <th className="py-3 px-6 text-left">Discipline</th>
             <th className="py-3 px-6 text-left">Sets</th>
             <th className="py-3 px-6 text-left">Weight</th>
@@ -52,7 +52,7 @@ const TrainingRecordReference = () => {
           {trainingRecords.map((record, index) => (
             <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
               <td className="py-3 px-6">{record.date}</td>
-              <td className="py-3 px-6">{record.site}</td>
+              <td className="py-3 px-6">{record.part}</td>
               <td className="py-3 px-6">{record.discipline}</td>
               <td className="py-3 px-6">{record.sets}</td>
               <td className="py-3 px-6">{record.weight}</td>

@@ -1,18 +1,18 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Menu from './pages/Menu';
+import Start from './pages/Start';
 import TrainingRegistration from './pages/TrainingRegistration';
 import TrainingRecordReference from './pages/TrainingRecordReference';
-import DisciplineSetting from './pages/DisciplineSetting';
+import TrainingMenuSetting from './pages/TrainingMenuSetting';
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Menu />} />
+        <Route path="/" element={<Start />} />
         <Route path="/training-registration" element={<TrainingRegistration />} />
         <Route path="/training-record-reference" element={<TrainingRecordReference />} />
-        <Route path="/discipline-setting" element={<DisciplineSetting />} />
+        <Route path="/training-menu-setting" element={<TrainingMenuSetting />} />
       </Routes>
     </BrowserRouter>
   );

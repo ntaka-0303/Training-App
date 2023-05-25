@@ -10,11 +10,14 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	// Register API handler
-	mux.HandleFunc("/register", register)
+	// Register Training API
+	mux.HandleFunc("/registerTraining", registerTraining)
 
-	// Get API handler
-	mux.HandleFunc("/get", get)
+	// Get Training API
+	mux.HandleFunc("/getTraining", getTraining)
+
+	// Menu Setting API
+	mux.HandleFunc("/setMenu", setMenu)
 
 	c := cors.AllowAll()
 	handler := c.Handler(mux)
