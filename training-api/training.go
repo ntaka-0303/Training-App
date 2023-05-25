@@ -79,6 +79,15 @@ func readTraining() ([]TrainingData, error) {
 	}
 	defer file.Close()
 
+	// ファイルの中身が０件の場合は空の配列を返す
+	fileInfo, err := file.Stat()
+	if err != nil {
+		return nil, err
+	}
+	if fileInfo.Size() == 0 {
+		return []TrainingData{}, nil
+	}
+
 	// ファイルの中身をJSONとしてデコード
 	var trainingRecords []TrainingData
 	err = json.NewDecoder(file).Decode(&trainingRecords)

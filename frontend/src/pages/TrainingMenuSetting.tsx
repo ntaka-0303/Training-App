@@ -12,7 +12,7 @@ const TrainingMenuSetting: React.FC = () => {
     try {
       const menuData = {
         part,
-        discipline
+        discipline,
       };
 
       // トレーニングAPIでメニューを登録

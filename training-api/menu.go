@@ -75,6 +75,15 @@ func readMenu() ([]MenuData, error) {
 	}
 	defer file.Close()
 
+	// ファイルの中身が空の場合は空のメニューデータを返す
+	fileInfo, err := file.Stat()
+	if err != nil {
+		return nil, err
+	}
+	if fileInfo.Size() == 0 {
+		return []MenuData{}, nil
+	}
+
 	// ファイルのデータをJSONとしてデコード
 	var menuDataArray []MenuData
 	err = json.NewDecoder(file).Decode(&menuDataArray)
