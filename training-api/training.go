@@ -9,28 +9,30 @@ import (
 	"os"
 )
 
-func registerHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
+type GetRegisterHandler struct{}
+type TrainingData struct {
+	Date       string `json:"date"`
+	Site       string `json:"site"`
+	Discipline string `json:"discipline"`
+	Sets       string `json:"sets"`
+	Weight     string `json:"weight"`
+	Reps       string `json:"reps"`
+	Remarks    string `json:"remarks"`
+}
 
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, "Error reading request body", http.StatusBadRequest)
-		return
-	}
+const filePath = "./data/training.json"
+
+func registerHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 
 	var trainingData TrainingData
-	err = json.Unmarshal(body, &trainingData)
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&trainingData); err != nil {
 		http.Error(w, "Error decoding request body", http.StatusBadRequest)
 		return
 	}
 
 	// Write the training data to the JSON file
-	err = writeTrainingData(trainingData)
-	if err != nil {
+	if err := writeTrainingData(trainingData); err != nil {
 		log.Println("Error writing training data:", err)
 		http.Error(w, "Error writing training data", http.StatusInternalServerError)
 		return
@@ -40,7 +42,6 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func writeTrainingData(trainingData TrainingData) error {
-	filePath := "./data/training.json"
 
 	// Open the JSON file
 	file, err := os.Open(filePath)
