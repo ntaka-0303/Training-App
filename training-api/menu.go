@@ -48,6 +48,25 @@ func setMenu(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Menu data registered successfully")
 }
 
+func getMenu(w http.ResponseWriter, r *http.Request) {
+	// Read the existing data from the JSON file
+	menuDataArray, err := readMenu()
+	if err != nil {
+		log.Fatal(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	// Encode the menu data array into JSON
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(menuDataArray)
+	if err != nil {
+		log.Fatal(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+}
+
 func readMenu() ([]MenuData, error) {
 	// Open the menu file
 	file, err := os.OpenFile(menuFilePath, os.O_RDONLY|os.O_CREATE, 0664)

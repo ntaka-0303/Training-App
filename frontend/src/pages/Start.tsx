@@ -15,6 +15,10 @@ const Start = () => {
     const handleTrainingMenuSettingClick = () => {
       navigate('training-menu-setting');
     };
+
+    const handleTrainingMenuReferenceClick = () => {
+      navigate('training-menu-reference');
+    };
   
     return (
       <div className="flex flex-col items-center justify-center h-screen">
@@ -28,6 +32,9 @@ const Start = () => {
           </button>
           <button className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded" onClick={handleTrainingMenuSettingClick}>
             Training Menu Setting
+          </button>
+          <button className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded" onClick={handleTrainingMenuReferenceClick}>
+            Training Menu Reference
           </button>
         </div>
       </div>

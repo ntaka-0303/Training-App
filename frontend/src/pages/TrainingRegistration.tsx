@@ -41,7 +41,7 @@ const TrainingRegistration: React.FC = () => {
     };
   
     try {
-      const response = await axios.post('/registerTraining', trainingData);
+      await axios.post('/registerTraining', trainingData);
 
       // Clear the form inputs
       setDate(getToday());

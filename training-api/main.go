@@ -16,8 +16,11 @@ func main() {
 	// Get Training API
 	mux.HandleFunc("/getTraining", getTraining)
 
-	// Menu Setting API
+	// Set Menu API
 	mux.HandleFunc("/setMenu", setMenu)
+
+	// Get Menu API
+	mux.HandleFunc("/getMenu", getMenu)
 
 	c := cors.AllowAll()
 	handler := c.Handler(mux)
