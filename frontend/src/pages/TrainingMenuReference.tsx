@@ -12,17 +12,20 @@ const TrainingMenuReference: React.FC = () => {
 
   // 初回レンダリング時に実行
   useEffect(() => {
+    // 初回表示は全ての部位
     setTargetPart('all');
+
+    // メニュデータを取得
     fetchMenuData();
   }, []);
 
-  // メニューデータが変更されたら、部位をセット
+  // 全部位をセット
   useEffect(() => {
     const allParts = Array.from(new Set(menuData.map((item) => item.part)));
     setAllParts(allParts);
   }, [menuData]);
 
-  // メニューデータまたは対象部位が変更されたら表示用メニューデータをセット
+  // 表示用メニューデータをセット
   useEffect(() => {
     if (targerPart === 'all') {
       setShowMenuData(menuData);
@@ -58,20 +61,16 @@ const TrainingMenuReference: React.FC = () => {
         <StartButton />
       </div>
       <div className="overflow-y-scroll max-h-80">
-        <table className="min-w-max table-fixed bg-white border rounded-lg">
-          <colgroup>
-            <col className="w-1/2" />
-            <col className="w-1/2" />
-          </colgroup>
+        <table className="table-fixed w-80 border">
           <thead>
-            <tr className="sticky top-0 bg-indigo-500 text-white rounded uppercase text-sm leading-normal">
+            <tr className="sticky top-0 bg-indigo-500 text-white uppercase text-sm leading-normal">
               <th className="px-4 py-2">部位</th>
               <th className="px-4 py-2">種目</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
             {showMenuData.map((item, index) => (
-              <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+              <tr key={index} className="odd:bg-white even:bg-gray-100">
                 <td className="px-4 py-2">{item.part}</td>
                 <td className="px-4 py-2">{item.discipline}</td>
               </tr>

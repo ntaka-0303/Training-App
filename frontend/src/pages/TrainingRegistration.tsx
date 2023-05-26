@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { StartButton, RegisterButton, TrainingMenuSettingButton } from "./Components/movePageButtonComponents";
 import axios from '../axiosConfig';
 import { MenuData } from './types/MenuData';
-import { getToday } from './utilFunc';
+import { DaysFunc } from './util/DaysFunc';
 
 const TrainingRegistration: React.FC = () => {
+  const today = DaysFunc.getToday();
   const [date, setDate] = useState('');
   const [part, setPart] = useState('');
   const [discipline, setDiscipline] = useState('');
@@ -19,12 +20,10 @@ const TrainingRegistration: React.FC = () => {
   // 初回レンダリング時に実行
   useEffect(() => {
     // 今日の日付をセット
-    setDate(getToday());
+    setDate(today);
+    
     // トレーニングAPIからメニューデータを取得
     fetchMenuData();
-
-    // メニューデータから部位のみを抽出し、重複を削除してセット
-
   }, []);
 
   // トレーニングAPIのメニュー取得からメニューデータを取得
@@ -46,7 +45,12 @@ const TrainingRegistration: React.FC = () => {
 
   // メニューデータまたは部位が変更されたら、選択されている部位に紐づく種目をセット
   useEffect(() => {
-    const disciplinesSelectedPart = Array.from(new Set(menuData.filter(item => item.part === part).map(item => item.discipline)));
+    const disciplinesSelectedPart = Array.from(
+      new Set(
+        menuData.filter(item => item.part === part).
+        map(item => item.discipline)
+      )
+    );
     setDisciplinesSelectedPart(disciplinesSelectedPart);
   }, [menuData, part]);
 
@@ -69,7 +73,7 @@ const TrainingRegistration: React.FC = () => {
       await axios.post('/registerTraining', trainingData);
 
       // インプットをリセット
-      setDate(getToday());
+      setDate(today);
       setPart('');
       setDiscipline('');
       setSets('');
