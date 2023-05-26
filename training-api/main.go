@@ -5,22 +5,21 @@ import (
 	"net/http"
 
 	"github.com/rs/cors"
+
+	"training-api/apiHandler"
 )
 
+// APIのエントリーポイント
 func main() {
 	mux := http.NewServeMux()
 
-	// トレーニング記録API
-	mux.HandleFunc("/registerTraining", registerTraining)
+	mux.HandleFunc("/registerTraining", apiHandler.RegisterTrainingHandler)
 
-	// トレーニング取得API
-	mux.HandleFunc("/getTraining", getTraining)
+	mux.HandleFunc("/getTraining", apiHandler.GetTrainingHandler)
 
-	// メニュー設定API
-	mux.HandleFunc("/setMenu", setMenu)
+	mux.HandleFunc("/setMenu", apiHandler.SetMenuHandler)
 
-	// メニュー取得API
-	mux.HandleFunc("/getMenu", getMenu)
+	mux.HandleFunc("/getMenu", apiHandler.GetMenuHandler)
 
 	c := cors.AllowAll()
 	handler := c.Handler(mux)
