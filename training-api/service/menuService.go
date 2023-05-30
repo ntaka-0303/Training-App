@@ -29,15 +29,15 @@ func SetMenu(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 既存のメニューデータの中から、メニューIDの最大値を取得
-	maxMenuID := 0
+	maxId := 0
 	for _, existingMenu := range existingMenuArray {
-		if existingMenu.MenuID > maxMenuID {
-			maxMenuID = existingMenu.MenuID
+		if existingMenu.Id > maxId {
+			maxId = existingMenu.Id
 		}
 	}
 
 	// メニューIDを設定
-	menu.MenuID = maxMenuID + 1
+	menu.Id = maxId + 1
 
 	// 既存のメニューデータに新しいメニューデータを追加
 	menuArray := append(existingMenuArray, menu)

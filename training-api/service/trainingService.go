@@ -28,6 +28,17 @@ func RegisterTraining(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// 既存のトレーニングデータの最大のトレーニングIDを取得
+	var maxId int
+	for _, training := range existingTrainingArray {
+		if training.Id > maxId {
+			maxId = training.Id
+		}
+	}
+
+	// トレーニングIDを設定
+	training.Id = maxId + 1
+
 	// 既存のトレーニングデータに新しいトレーニングデータを追加
 	trainingArray := append(existingTrainingArray, training)
 

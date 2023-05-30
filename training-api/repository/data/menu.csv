@@ -1,4 +1,4 @@
-menuID,part,discipline
+id,part,discipline
 1,大胸筋,ベンチプレス
 2,大胸筋,フライ
 3,大胸筋,ディップス
@@ -30,3 +30,4 @@ menuID,part,discipline
 29,前腕筋,ハンマーカール
 30,前腕筋,コンセントレーションカール
 32,背中,デッドリフト
+33,大胸筋,インクラインベンチ

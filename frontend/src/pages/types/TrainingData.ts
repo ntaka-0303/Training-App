@@ -1,7 +1,7 @@
 export interface TrainingData {
+    id: number;
     date: string;
-    part: string;
-    discipline: string;
+    menuId: number;
     sets: number;
     weight: number;
     reps: number;

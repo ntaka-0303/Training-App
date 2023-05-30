@@ -6,9 +6,20 @@ import { MenuData } from './types/MenuData';
 import { DaysFunc } from './util/DaysFunc';
 
 const TrainingDataReference = () => {
+
+  type ShowTrainingData = {
+    date: string;
+    part: string;
+    discipline: string;
+    weight: number;
+    reps: number;
+    sets: number;
+    remarks: string;
+  };
+
   const today = DaysFunc.getToday();
   const [trainingData, setTrainingData] = useState<TrainingData[]>([]);
-  const [showTrainingData, setShowTrainingData] = useState<TrainingData[]>([]);
+  const [showTrainingData, setShowTrainingData] = useState<ShowTrainingData[]>([]);
   const [duration, setDuration] = useState<string>('');
   const [targerPart, setTargetPart] = useState<string>('');
   const [targerDiscipline, setTargetDiscipline] = useState<string>('');
@@ -37,8 +48,32 @@ const TrainingDataReference = () => {
     // 表示期間からFrom日付をセット
     const fromDate = getFromDateByDuration(duration);
 
+    // トレーニングデータから表示用トレーニングデータを生成
+    var showTrainingData : ShowTrainingData[] = [];
+    trainingData.forEach((item) => {
+      // メニューデータからメニューを取得
+      const menu  = menuData.find((menu) => menu.id === item.menuId);
+
+      // メニューが存在しない場合はスキップ
+      if (menu === undefined) {
+        return;
+      }
+
+      // 表示用トレーニングデータを生成
+      const showTrainingDataItem : ShowTrainingData = {
+        date: item.date,
+        part: menu.part,
+        discipline: menu.discipline,
+        weight: item.weight,
+        reps: item.reps,
+        sets: item.sets,
+        remarks: item.remarks,
+      };
+      showTrainingData.push(showTrainingDataItem);
+    });
+    
     // Fromから今日までの範囲内のデータを抽出
-    var showTrainingData = trainingData.filter((item) => 
+    showTrainingData = showTrainingData.filter((item) => 
       DaysFunc.decideDateBetweenFromTo(item.date, fromDate, today)
     );
 

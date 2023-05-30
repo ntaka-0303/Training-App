@@ -7,6 +7,7 @@ import { DaysFunc } from './util/DaysFunc';
 const TrainingRegistration: React.FC = () => {
   const today = DaysFunc.getToday();
   const [date, setDate] = useState('');
+  const [menuId, setMenuId] = useState<number>();
   const [part, setPart] = useState('');
   const [discipline, setDiscipline] = useState('');
   const [sets, setSets] = useState('');
@@ -54,14 +55,29 @@ const TrainingRegistration: React.FC = () => {
     setDisciplinesSelectedPart(disciplinesSelectedPart);
   }, [menuData, part]);
 
+  // 部位と種目が選択されたら、メニューIDをセット
+  useEffect(() => {
+    const menuId = menuData.find(
+      (item) => item.part === part && item.discipline === discipline
+    )?.id;
 
+    // メニューIDが取得できなかったら処理を終了
+    if (!menuId) return;
+    
+    // メニューIDが未定義または空文字の場合、処理を終了
+    if (menuId === undefined) return;
+
+    // メニューIDをセット
+    setMenuId(menuId);
+  }, [menuData, part, discipline]);
+
+  // トレーニングデータを登録
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const trainingData = {
       date,
-      part,
-      discipline,
+      menuId,
       sets,
       weight,
       reps,
