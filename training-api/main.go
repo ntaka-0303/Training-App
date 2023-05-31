@@ -21,6 +21,8 @@ func main() {
 
 	mux.HandleFunc("/getMenu", apiHandler.GetMenuHandler)
 
+	mux.HandleFunc("/getPower", apiHandler.GetPowerHandler)
+
 	c := cors.AllowAll()
 	handler := c.Handler(mux)
 

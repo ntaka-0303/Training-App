@@ -13,3 +13,7 @@ func RegisterTrainingHandler(w http.ResponseWriter, r *http.Request) {
 func GetTrainingHandler(w http.ResponseWriter, r *http.Request) {
 	service.GetTraining(w, r)
 }
+
+func GetPowerHandler(w http.ResponseWriter, r *http.Request) {
+	service.GetPower(w, r)
+}

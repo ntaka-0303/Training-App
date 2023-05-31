@@ -20,6 +20,9 @@ export const TrainingRegistrationComponent: React.FC = () => {
 
   // 初回レンダリング時に実行
   useEffect(() => {
+    // 今日の日付をセット
+    setDate(today);
+    
     // トレーニングAPIからメニューデータを取得
     fetchMenuData();
   }, []);

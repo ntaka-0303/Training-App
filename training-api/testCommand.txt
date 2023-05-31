@@ -1,0 +1,12 @@
+curl -X POST -H "Content-Type: application/json" -d '{
+  "id": 1,
+  "date": "2023-05-31",
+  "menuId": 28,
+  "sets": 3,
+  "weight": 65.5,
+  "reps": 5,
+  "remarks": "OK"
+}' http://localhost:8000/registerTraining
+
+
+curl -X GET http://localhost:8000/getPower
