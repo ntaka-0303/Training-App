@@ -15,7 +15,6 @@ func RegisterTraining(w http.ResponseWriter, r *http.Request) {
 	var training types.Training
 	err := json.NewDecoder(r.Body).Decode(&training)
 	if err != nil {
-		log.Println("Error decoding request body")
 		log.Fatal(err)
 		http.Error(w, "Error decoding request body", http.StatusBadRequest)
 		return

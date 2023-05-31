@@ -7,12 +7,12 @@ import { DaysFunc } from '../util/DaysFunc';
 export const TrainingRegistrationComponent: React.FC = () => {
   const today = DaysFunc.getToday();
   const [date, setDate] = useState('');
-  const [menuId, setMenuId] = useState<number>();
+  const [menuId, setMenuId] = useState<number>(0);
   const [part, setPart] = useState('');
   const [discipline, setDiscipline] = useState('');
-  const [sets, setSets] = useState('');
-  const [weight, setWeight] = useState('');
-  const [reps, setReps] = useState('');
+  const [sets, setSets] = useState<number | null>(null);
+  const [weight, setWeight] = useState<number | null>(null);
+  const [reps, setReps] = useState<number | null>(null);
   const [remarks, setRemarks] = useState('');
   const [menuData, setMenuData] = useState<MenuData[]>([]);
   const [allParts ,setAllParts] = useState<string[]>([]);
@@ -25,7 +25,7 @@ export const TrainingRegistrationComponent: React.FC = () => {
     
     // トレーニングAPIからメニューデータを取得
     fetchMenuData();
-  }, []);
+  }, [today]);
 
   // トレーニングAPIのメニュー取得からメニューデータを取得
   const fetchMenuData = async () => {
@@ -89,11 +89,12 @@ export const TrainingRegistrationComponent: React.FC = () => {
 
       // インプットをリセット
       setDate(today);
+      setMenuId(0)
       setPart('');
       setDiscipline('');
-      setSets('');
-      setWeight('');
-      setReps('');
+      setSets(0);
+      setWeight(0);
+      setReps(0);
       setRemarks('');
 
       console.log('Training data registered successfully.');
@@ -148,18 +149,22 @@ export const TrainingRegistrationComponent: React.FC = () => {
           type="number"
           id="sets"
           name="sets"
-          value={sets}
-          onChange={(e) => setSets(e.target.value)}
+          onChange={(e) => setSets(Number(e.target.value))}
           placeholder="セット数"
           className="px-4 py-2 rounded"
           required
         />
         <input
-          type="number"
+          type="text"
           id="weight"
           name="weight"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            const number = parseFloat(value);
+            if (!isNaN(number)) {
+              setWeight(number);
+            }
+          }}
           placeholder="重量"
           className="px-4 py-2 rounded"
           required
@@ -168,8 +173,7 @@ export const TrainingRegistrationComponent: React.FC = () => {
           type="number"
           id="reps"
           name="reps"
-          value={reps}
-          onChange={(e) => setReps(e.target.value)}
+          onChange={(e) => setReps(Number(e.target.value))}
           placeholder="レップ数"
           className="px-4 py-2 rounded"
           required

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PageBase } from "../Components/PageBaseComponent";
 import { TrainingMenuSettingCompoent } from "../Components/TrainingMenuSettingComponent";
 import { StartButton } from "../Components/MovePageButtonComponents";

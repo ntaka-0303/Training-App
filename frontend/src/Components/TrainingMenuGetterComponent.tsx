@@ -29,7 +29,7 @@ export const TrainingMenuGetterComponent: React.FC<Props> = ({setShowMenuData}) 
     } else {
       setShowMenuData(menuData.filter(item => item.part === targerPart));
     }
-  }, [menuData, targerPart]);
+  }, [menuData, targerPart, setShowMenuData]);
 
   // 全部位をセット
   useEffect(() => {

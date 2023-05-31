@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "../axiosConfig";
+import React, { useState } from "react";
 import { MenuData } from "../types/MenuData";
 import { StartButton } from "../Components/MovePageButtonComponents";
 import { PageBase } from "../Components/PageBaseComponent";
