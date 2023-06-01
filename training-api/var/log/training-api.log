@@ -1,0 +1,27 @@
+2023/06/01 14:02:26 errorHandle.go:16: Error: invalid character '}' looking for beginning of object key string
+2023/06/01 14:02:26 server.go:3217: http: panic serving 127.0.0.1:53133: Error: invalid character '}' looking for beginning of object key string
+goroutine 18 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/Cellar/go/1.20.4/libexec/src/net/http/server.go:1854 +0xbf
+panic({0x126dba0, 0xc000096ef0})
+	/usr/local/Cellar/go/1.20.4/libexec/src/runtime/panic.go:890 +0x263
+log.Panicf({0x12be58f?, 0x1332500?}, {0xc0000bf920?, 0xc0000bf8b0?, 0x1330f88?})
+	/usr/local/Cellar/go/1.20.4/libexec/src/log/log.go:391 +0x67
+training-api/service.ErrorHandle({0x1334490, 0xc000100000}, {0x13322c0?, 0xc0000a01b0})
+	/Users/takamatsunaoki/Desktop/dev/Training-App/training-api/service/errorHandle.go:16 +0x33e
+training-api/apiHandler.SetMenuHandler({0x1334490?, 0xc000100000}, 0xc0000f6000)
+	/Users/takamatsunaoki/Desktop/dev/Training-App/training-api/apiHandler/menuHandler.go:24 +0x1a5
+net/http.HandlerFunc.ServeHTTP(0xc000100040?, {0x1334490?, 0xc000100000?}, 0x0?)
+	/usr/local/Cellar/go/1.20.4/libexec/src/net/http/server.go:2122 +0x2f
+net/http.(*ServeMux).ServeHTTP(0xc0000ea000?, {0x1334490, 0xc000100000}, 0xc0000f6000)
+	/usr/local/Cellar/go/1.20.4/libexec/src/net/http/server.go:2500 +0x149
+github.com/rs/cors.(*Cors).Handler.func1({0x1334490, 0xc000100000}, 0xc0000f6000)
+	/Users/takamatsunaoki/go/pkg/mod/github.com/rs/cors@v1.9.0/cors.go:236 +0x1c4
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x1334490?, 0xc000100000?}, 0x121cd34?)
+	/usr/local/Cellar/go/1.20.4/libexec/src/net/http/server.go:2122 +0x2f
+net/http.serverHandler.ServeHTTP({0x1333890?}, {0x1334490, 0xc000100000}, 0xc0000f6000)
+	/usr/local/Cellar/go/1.20.4/libexec/src/net/http/server.go:2936 +0x316
+net/http.(*conn).serve(0xc0000e8120, {0x1334688, 0xc000098de0})
+	/usr/local/Cellar/go/1.20.4/libexec/src/net/http/server.go:1995 +0x612
+created by net/http.(*Server).Serve
+	/usr/local/Cellar/go/1.20.4/libexec/src/net/http/server.go:3089 +0x5ed
