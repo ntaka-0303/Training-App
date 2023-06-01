@@ -5,8 +5,19 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "sets": 3,
   "weight": 65.5,
   "reps": 5,
-  "remarks": "OK"
+  "remarks": "TEST"
 }' http://localhost:8000/registerTraining
 
 
+curl -X GET http://localhost:8000/getTraining
+
 curl -X GET http://localhost:8000/getPower
+
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "id": 1,
+  "part": "TEST PART",
+  "discipline": "TEST DISCIPLINE"
+}' http://localhost:8000/setMenu
+
+curl -X GET http://localhost:8000/getMenu

@@ -40,7 +40,7 @@ export const TrainingRecordGetterComponent: React.FC<Props> = ({setShowTrainingD
 
   // 表示用トレーニングデータをセット
   useEffect(() => {
-    var showTrainingData : ShowTrainingData[] = [];
+    let showTrainingData : ShowTrainingData[] = [];
     trainingData.forEach((item) => {
       // メニューデータからメニューを取得
       const menu  = menuData.find((menu) => menu.id === item.menuId);

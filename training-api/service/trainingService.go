@@ -1,43 +1,25 @@
 package service
 
 import (
-	"encoding/json"
-	"fmt"
-	"log"
-	"net/http"
-
 	"training-api/repository"
 	"training-api/types"
 )
 
-func RegisterTraining(w http.ResponseWriter, r *http.Request) {
-	// トレーニングデータをJSONとしてデコード
-	var training types.Training
-	err := json.NewDecoder(r.Body).Decode(&training)
-	if err != nil {
-		log.Fatal(err)
-		http.Error(w, "Error decoding request body", http.StatusBadRequest)
-		return
-	}
+func GetTrainingId() (int, error) {
+	// トレーニングIDのシーケンスを取得
+	return repository.ReadAndIncrTrainingIdSeq()
 
+}
+
+func RegisterTraining(id int, training types.Training) error {
 	// ファイルから既存のトレーニングデータを読み込む
 	existingTrainingArray, err := repository.ReadTraining()
 	if err != nil {
-		log.Fatal(err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-
-	// 既存のトレーニングデータの最大のトレーニングIDを取得
-	var maxId int
-	for _, training := range existingTrainingArray {
-		if training.Id > maxId {
-			maxId = training.Id
-		}
+		return err
 	}
 
 	// トレーニングIDを設定
-	training.Id = maxId + 1
+	training.Id = id
 
 	// 既存のトレーニングデータに新しいトレーニングデータを追加
 	trainingArray := append(existingTrainingArray, training)
@@ -45,46 +27,28 @@ func RegisterTraining(w http.ResponseWriter, r *http.Request) {
 	// ファイルにトレーニングデータを書き込む
 	err = repository.WriteTraining(trainingArray)
 	if err != nil {
-		log.Fatal(err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
+		return err
 	}
 
-	// Powerの登録
-	err = RegisterPower(training.Id, training.Sets, training.Weight, training.Reps)
-	if err != nil {
-		log.Fatal(err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+	return nil
 
-	fmt.Fprint(w, "Training data registered successfully")
 }
 
-func GetTraining(w http.ResponseWriter, r *http.Request) {
+func GetTraining() ([]types.Training, error) {
 	// ファイルからトレーニングデータを読み込む
 	trainingRecords, err := repository.ReadTraining()
 	if err != nil {
-		log.Fatal(err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
+		return nil, err
 	}
 
-	// トレーニングデータをJSONとしてエンコードしてレスポンスボディに書き込む
-	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(trainingRecords)
-	if err != nil {
-		log.Fatal(err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+	return trainingRecords, nil
 }
 
-func RegisterPower(trainingId int, sets int, weight float32, reps int) error {
+func RegisterPower(id int, training types.Training) error {
 	// powerを設定
 	var power types.Power
-	power.TrainingId = trainingId
-	power.Power = weight * float32(reps) * float32(sets)
+	power.TrainingId = id
+	power.Power = training.Weight * float32(training.Reps) * float32(training.Sets)
 
 	// ファイルから既存のトレーニングデータを読み込む
 	existingPowerArray, err := repository.ReadPower()
@@ -104,21 +68,12 @@ func RegisterPower(trainingId int, sets int, weight float32, reps int) error {
 	return nil
 }
 
-func GetPower(w http.ResponseWriter, r *http.Request) {
+func GetPower() ([]types.Power, error) {
 	// ファイルからトレーニングデータを読み込む
 	powerRecords, err := repository.ReadPower()
 	if err != nil {
-		log.Fatal(err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
+		return nil, err
 	}
 
-	// トレーニングデータをJSONとしてエンコードしてレスポンスボディに書き込む
-	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(powerRecords)
-	if err != nil {
-		log.Fatal(err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+	return powerRecords, err
 }
