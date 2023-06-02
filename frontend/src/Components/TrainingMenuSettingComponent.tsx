@@ -10,13 +10,13 @@ export const TrainingMenuSettingCompoent: React.FC = () => {
     event.preventDefault();
 
     try {
-      const menuData = {
+      const menu = {
         part,
         discipline,
       };
 
-      // トレーニングAPIでメニューを登録
-      await axios.post('/setMenu', menuData);
+      // メニューを登録
+      await axios.post('/setMenu', menu);
 
       // インプットをクリア
       setPart('');

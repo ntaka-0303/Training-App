@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../axiosConfig';
-import { TrainingData } from '../types/TrainingData';
-import { ShowTrainingData } from '../types/ShowTrainingData';
-import { MenuData } from '../types/MenuData';
+import { Training } from '../types/Training';
+import { ShowTraining } from '../types/ShowTraining';
+import { Menu } from '../types/Menu';
 import { DaysFunc } from '../util/DaysFunc';
 
 type Props = {
-  showTrainingData: ShowTrainingData[];
-  setShowTrainingData: React.Dispatch<React.SetStateAction<ShowTrainingData[]>>;
+  trainingExtracted: ShowTraining[];
+  setTrainingExtracted: React.Dispatch<React.SetStateAction<ShowTraining[]>>;
+  isMenuSelected: boolean;
+  setIsMenuSelected: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const TrainingRecordGetterComponent: React.FC<Props> = ({setShowTrainingData}) => {
+export const TrainingGetterComponent: React.FC<Props> = ({setTrainingExtracted, setIsMenuSelected}) => {
 
   const today = DaysFunc.getToday();
-  const [trainingData, setTrainingData] = useState<TrainingData[]>([]);
+  const [training, setTraining] = useState<Training[]>([]);
   const [fromDate, setFromDate] = useState<string>('');
   const [duration, setDuration] = useState<string>('');
   const [targerPart, setTargetPart] = useState<string>('');
   const [targerDiscipline, setTargetDiscipline] = useState<string>('');
-  const [menuData, setMenuData] = useState<MenuData[]>([]);
+  const [menu, setMenu] = useState<Menu[]>([]);
   const [allParts, setAllParts] = useState<string[]>([]);
   const [disciplinesSelectedPart, setDisciplinesSelectedPart] = useState<string[]>([]);
 
@@ -32,58 +34,59 @@ export const TrainingRecordGetterComponent: React.FC<Props> = ({setShowTrainingD
     setTargetDiscipline('all');
 
     // トレーニングデータを取得
-    fetchTrainingDatas();
+    fetchTrainings();
 
     // メニューデータを取得
-    fetchMenuData();
+    fetchMenu();
   }, []);
 
   // 表示用トレーニングデータをセット
   useEffect(() => {
-    let showTrainingData : ShowTrainingData[] = [];
-    trainingData.forEach((item) => {
+    let trainingExtracted : ShowTraining[] = [];
+    training.forEach((item) => {
       // メニューデータからメニューを取得
-      const menu  = menuData.find((menu) => menu.id === item.menuId);
-
-      // メニューが存在しない場合はスキップ
-      if (menu === undefined) {
+      const targetMenu = menu.find((menu) => menu.id === item.menuId);
+      if (targetMenu === undefined) {
         return;
       }
 
       // 表示用トレーニングデータを生成
-      const showTrainingDataItem : ShowTrainingData = {
+      const showTrainingItem : ShowTraining = {
+        id: item.id,
         date: item.date,
-        part: menu.part,
-        discipline: menu.discipline,
+        part: targetMenu.part,
+        discipline: targetMenu.discipline,
         weight: item.weight,
         reps: item.reps,
         sets: item.sets,
         remarks: item.remarks,
       };
-      showTrainingData.push(showTrainingDataItem);
+      trainingExtracted.push(showTrainingItem);
     });
     
-    // Fromから今日までの範囲内のデータを抽出
-    showTrainingData = showTrainingData.filter((item) => 
-      DaysFunc.decideDateBetweenFromTo(item.date, fromDate, today)
-    );
+    // Fromから今日までの範囲内のトレーニングを絞り込み
+    if (fromDate !== 'all') {
+      trainingExtracted = trainingExtracted.filter((item) => 
+      DaysFunc.decideDateBetweenFromTo(item.date, fromDate, today));
+    }
 
     // 部位、種目で絞り込み
     if (targerPart !== 'all') {
-      showTrainingData = showTrainingData.filter((item) => item.part === targerPart);
+      trainingExtracted = trainingExtracted.filter((item) => item.part === targerPart);
     }
     if (targerDiscipline !== 'all') {
-      showTrainingData = showTrainingData.filter((item) => item.discipline === targerDiscipline);
+      trainingExtracted = trainingExtracted.filter((item) => item.discipline === targerDiscipline);
     }
 
-    // 表示用トレーニングデータを日付の降順にソート
-    showTrainingData.sort((a, b) => {
-      if (a.date > b.date) return -1;
-      if (a.date < b.date) return 1;
-      return 0;
-    });
-    setShowTrainingData(showTrainingData);
-  }, [trainingData, targerPart, targerDiscipline, menuData, fromDate, today, setShowTrainingData]);
+    // メニューの選択状況をセット
+    if (targerPart !== 'all' && targerDiscipline !== 'all') {
+      setIsMenuSelected(true);
+    } else {
+      setIsMenuSelected(false);
+    }
+
+    setTrainingExtracted(trainingExtracted);
+  }, [training, targerPart, targerDiscipline, menu, fromDate, today, setTrainingExtracted, setIsMenuSelected]);
 
   // From日付をセット
   useEffect(() => {
@@ -92,50 +95,54 @@ export const TrainingRecordGetterComponent: React.FC<Props> = ({setShowTrainingD
     if (duration === 'threeDays') {
       fromDate = DaysFunc.getDaysAgo(today, 3);
     } else if (duration === 'oneWeek') {
-      fromDate =  DaysFunc.getWeeksAgo(today, 1);
+      fromDate = DaysFunc.getWeeksAgo(today, 1);
     } else if (duration === 'threeWeeks') {
-      fromDate =  DaysFunc.getWeeksAgo(today, 3);
+      fromDate = DaysFunc.getWeeksAgo(today, 3);
     } else if (duration === 'oneMonth') {
-      fromDate =  DaysFunc.getMonthsAgo(today, 1);
+      fromDate = DaysFunc.getMonthsAgo(today, 1);
+    } else if (duration === 'all') {
+      fromDate = 'all';
     }
     setFromDate(fromDate);
   }, [duration, today]);
 
   // 全部位をセット
   useEffect(() => {
-    const allParts = Array.from(new Set(menuData.map((item) => item.part)));
+    const allParts = Array.from(new Set(menu.map((item) => item.part)));
     setAllParts(allParts);
-  }, [menuData]);
+  }, [menu]);
 
   // メニューデータまたは部位が変更されたら、選択されている部位に紐づく種目をセット
   useEffect(() => {
     const disciplinesSelectedPart = Array.from(
       new Set(
-        menuData.filter(item => item.part === targerPart).map(item => item.discipline)
+        menu.filter(item => item.part === targerPart).map(item => item.discipline)
       )
       );
     setDisciplinesSelectedPart(disciplinesSelectedPart);
-  }, [menuData, targerPart]);
+  }, [menu, targerPart]);
 
   // トレーニングデータを取得
-  const fetchTrainingDatas = async () => {
+  const fetchTrainings = async () => {
     try {
       const response = await axios.get('/getTraining');
-      setTrainingData(response.data);
+      setTraining(response.data);
     } catch (error) {
       console.error('Error fetching training datas:', error);
     }
   };
 
   // メニューデータを取得
-  const fetchMenuData = async () => {
+  const fetchMenu = async () => {
     try {
       const response = await axios.get("/getMenu");
-      setMenuData(response.data);
+      setMenu(response.data);
     } catch (error) {
       console.error("Error fetching menu data:", error);
     }
   };
+
+  // トレーニングパワーデータを取得
 
   return (
       <div className="flex flex-row items-center justify-center mb-4">

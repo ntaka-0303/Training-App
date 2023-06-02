@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RegisterButton } from "../Components/MovePageButtonComponents";
 import axios from '../axiosConfig';
-import { MenuData } from '../types/MenuData';
+import { Menu } from '../types/Menu';
 import { DaysFunc } from '../util/DaysFunc';
 
 export const TrainingRegistrationComponent: React.FC = () => {
@@ -14,7 +14,7 @@ export const TrainingRegistrationComponent: React.FC = () => {
   const [weight, setWeight] = useState<number | null>(null);
   const [reps, setReps] = useState<number | null>(null);
   const [remarks, setRemarks] = useState('');
-  const [menuData, setMenuData] = useState<MenuData[]>([]);
+  const [menu, setMenu] = useState<Menu[]>([]);
   const [allParts ,setAllParts] = useState<string[]>([]);
   const [disciplinesSelectedPart, setDisciplinesSelectedPart] = useState<string[]>([]);
 
@@ -24,14 +24,14 @@ export const TrainingRegistrationComponent: React.FC = () => {
     setDate(today);
     
     // トレーニングAPIからメニューデータを取得
-    fetchMenuData();
+    fetchMenu();
   }, [today]);
 
   // トレーニングAPIのメニュー取得からメニューデータを取得
-  const fetchMenuData = async () => {
+  const fetchMenu = async () => {
     try {
       const response = await axios.get('/getMenu');
-      setMenuData(response.data);
+      setMenu(response.data);
     } catch (error) {
       console.error('Error fetching menu data:', error);
     }
@@ -39,24 +39,24 @@ export const TrainingRegistrationComponent: React.FC = () => {
 
   // メニューデータが変更されたら、部位に紐づく種目をセット
   useEffect(() => {
-    const allParts = Array.from(new Set(menuData.map((item) => item.part)));
+    const allParts = Array.from(new Set(menu.map((item) => item.part)));
     setAllParts(allParts);
-  }, [menuData]);
+  }, [menu]);
 
 
   // メニューデータまたは部位が変更されたら、選択されている部位に紐づく種目をセット
   useEffect(() => {
     const disciplinesSelectedPart = Array.from(
       new Set(
-        menuData.filter(item => item.part === part).map(item => item.discipline)
+        menu.filter(item => item.part === part).map(item => item.discipline)
       )
     );
     setDisciplinesSelectedPart(disciplinesSelectedPart);
-  }, [menuData, part]);
+  }, [menu, part]);
 
   // 部位と種目が選択されたら、メニューIDをセット
   useEffect(() => {
-    const menuId = menuData.find(
+    const menuId = menu.find(
       (item) => item.part === part && item.discipline === discipline
     )?.id;
 
@@ -68,7 +68,7 @@ export const TrainingRegistrationComponent: React.FC = () => {
 
     // メニューIDをセット
     setMenuId(menuId);
-  }, [menuData, part, discipline]);
+  }, [menu, part, discipline]);
 
   // トレーニングデータを登録
   const handleFormSubmit = async (event: React.FormEvent) => {

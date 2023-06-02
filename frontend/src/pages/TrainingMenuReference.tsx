@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MenuData } from "../types/MenuData";
+import { Menu } from "../types/Menu";
 import { StartButton } from "../Components/MovePageButtonComponents";
 import { PageBase } from "../Components/PageBaseComponent";
 import { TrainingMenuGetterComponent } from "../Components/TrainingMenuGetterComponent";
@@ -7,18 +7,18 @@ import { TrainingMenuViewerComponent } from "../Components/TrainingMenuViewerCom
 
 
 const TrainingMenuReference: React.FC = () => {
-  const [showMenuData, setShowMenuData] = useState<MenuData[]>([]);
+  const [showMenu, setShowMenu] = useState<Menu[]>([]);
 
   return (
     <PageBase
       title="トレーニングメニュー参照"
       main={[
         <TrainingMenuGetterComponent
-          showMenuData={showMenuData}
-          setShowMenuData={setShowMenuData}
+          showMenu={showMenu}
+          setShowMenu={setShowMenu}
         />,
         <TrainingMenuViewerComponent
-          showMenuData={showMenuData}
+          showMenu={showMenu}
         />,
       ]}
       buttons={[

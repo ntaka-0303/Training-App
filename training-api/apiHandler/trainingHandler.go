@@ -31,14 +31,6 @@ func RegisterTrainingHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintln(w, "Training data registered successfully")
-
-	// パワーを登録
-	err = service.RegisterPower(id, training)
-	if err != nil {
-		service.ErrorHandle(w, err)
-		return
-	}
-	fmt.Fprintln(w, "Training power registered successfully")
 }
 
 func GetTrainingHandler(w http.ResponseWriter, r *http.Request) {
@@ -51,22 +43,6 @@ func GetTrainingHandler(w http.ResponseWriter, r *http.Request) {
 	// トレーニングデータをJSONとしてエンコードしてレスポンスボディに書き込む
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(trainingRecords)
-	if err != nil {
-		service.ErrorHandle(w, err)
-		return
-	}
-}
-
-func GetPowerHandler(w http.ResponseWriter, r *http.Request) {
-	powerRecords, err := service.GetPower()
-	if err != nil {
-		service.ErrorHandle(w, err)
-		return
-	}
-
-	// トレーニングデータをJSONとしてエンコードしてレスポンスボディに書き込む
-	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(powerRecords)
 	if err != nil {
 		service.ErrorHandle(w, err)
 		return

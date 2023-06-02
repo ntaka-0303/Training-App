@@ -1,25 +1,27 @@
 import React, {useState} from 'react';
 import { TrainingGetterComponent } from '../Components/TrainingGetterComponent';
-import { TrainingRecordViewerComponent } from '../Components/TrainingRecordViewerComponent';
+import { TrainingGraphViewerComponent } from '../Components/TrainingGraphViewerComponent';
 import { StartButton, TrainingRegistrationButton } from '../Components/MovePageButtonComponents';
 import { PageBase } from '../Components/PageBaseComponent';
 import { ShowTraining } from '../types/ShowTraining';
 
-const TrainingReference = () => {
+const TrainingGraph = () => {
 
   const [trainingExtracted, setTrainingExtracted] = useState<ShowTraining[]>([]);
+  const [isMenuSelected, setIsMenuSelected] = useState<boolean>(false);
   return (
     <PageBase
-      title="トレーニング記録参照"
+      title="トレーニンググラフ"
       main={[
       <TrainingGetterComponent
         trainingExtracted={trainingExtracted}
         setTrainingExtracted={setTrainingExtracted}
-        isMenuSelected={false}
-        setIsMenuSelected={() => {}}
+        isMenuSelected={isMenuSelected}
+        setIsMenuSelected={setIsMenuSelected}
       />,
-      <TrainingRecordViewerComponent
+      <TrainingGraphViewerComponent
         trainingExtracted={trainingExtracted}
+        isMenuSelected={isMenuSelected}
       />
       ]}
       buttons={[
@@ -30,4 +32,4 @@ const TrainingReference = () => {
   );
 };
 
-export default TrainingReference;
+export default TrainingGraph;

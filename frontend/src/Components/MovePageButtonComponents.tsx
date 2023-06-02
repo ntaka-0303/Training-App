@@ -84,3 +84,19 @@ export const TrainingMenuReferenceButton: React.FC = () => {
     </button>
   );
 };
+
+// トレーニンググラフ画面へ移動するボタン
+export const TrainingGraphButton: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleTrainingGraphClick = () => {
+    navigate("/training-graph");
+  };
+
+  return (
+    <button className="px-4 py-2 mt-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded" onClick={handleTrainingGraphClick}>
+      トレーニンググラフ
+    </button>
+  );
+};
+

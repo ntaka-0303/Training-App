@@ -1,11 +1,11 @@
 import React from "react";
-import { MenuData } from "../types/MenuData";
+import { Menu } from "../types/Menu";
 
 type Props = {
-  showMenuData: MenuData[];
+  showMenu: Menu[];
 };
 
-export const TrainingMenuViewerComponent: React.FC<Props> = ({showMenuData}) => {
+export const TrainingMenuViewerComponent: React.FC<Props> = ({showMenu}) => {
 
   return (
       <div className="overflow-y-scroll max-h-80">
@@ -17,7 +17,7 @@ export const TrainingMenuViewerComponent: React.FC<Props> = ({showMenuData}) => 
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
-            {showMenuData.map((item, index) => (
+            {showMenu.map((item, index) => (
               <tr key={index} className="odd:bg-white even:bg-gray-100">
                 <td className="px-4 py-2">{item.part}</td>
                 <td className="px-4 py-2">{item.discipline}</td>

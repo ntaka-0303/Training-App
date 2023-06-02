@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "../axiosConfig";
-import { MenuData } from "../types/MenuData";
+import { Menu } from "../types/Menu";
 
 type Props = {
-  showMenuData: MenuData[];
-  setShowMenuData: React.Dispatch<React.SetStateAction<MenuData[]>>;
+  showMenu: Menu[];
+  setShowMenu: React.Dispatch<React.SetStateAction<Menu[]>>;
 };
 
-
-export const TrainingMenuGetterComponent: React.FC<Props> = ({setShowMenuData}) => {
-  const [menuData, setMenuData] = useState<MenuData[]>([]);
+export const TrainingMenuGetterComponent: React.FC<Props> = ({setShowMenu}) => {
+  const [menu, setMenu] = useState<Menu[]>([]);
   const [allParts, setAllParts] = useState<string[]>([]);
   const [targerPart, setTargetPart] = useState<string>('');
 
@@ -19,29 +18,29 @@ export const TrainingMenuGetterComponent: React.FC<Props> = ({setShowMenuData}) 
     setTargetPart('all');
 
     // メニュデータを取得
-    fetchMenuData();
+    fetchMenu();
   }, []);
 
   // 表示用メニューデータをセット
   useEffect(() => {
     if (targerPart === 'all') {
-      setShowMenuData(menuData);
+      setShowMenu(menu);
     } else {
-      setShowMenuData(menuData.filter(item => item.part === targerPart));
+      setShowMenu(menu.filter(item => item.part === targerPart));
     }
-  }, [menuData, targerPart, setShowMenuData]);
+  }, [menu, targerPart, setShowMenu]);
 
   // 全部位をセット
   useEffect(() => {
-    const allParts = Array.from(new Set(menuData.map((item) => item.part)));
+    const allParts = Array.from(new Set(menu.map((item) => item.part)));
     setAllParts(allParts);
-  }, [menuData]);
+  }, [menu]);
 
-  // トレーニングAPIのメニュー取得から全てのメニューデータを取得
-  const fetchMenuData = async () => {
+  // メニューデータを取得
+  const fetchMenu = async () => {
     try {
       const response = await axios.get("/getMenu");
-      setMenuData(response.data);
+      setMenu(response.data);
     } catch (error) {
       console.error("Error fetching menu data:", error);
     }

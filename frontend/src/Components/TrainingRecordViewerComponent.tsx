@@ -1,11 +1,24 @@
-import React from 'react';
-import { ShowTrainingData } from '../types/ShowTrainingData';
+import React, { useEffect, useState } from 'react';
+import { ShowTraining } from '../types/ShowTraining';
 
 type Props = {
-  showTrainingData: ShowTrainingData[];
+  trainingExtracted: ShowTraining[];
 };
 
-export const TrainingRecordViewerComponent: React.FC<Props> = ({showTrainingData}) => {
+export const TrainingRecordViewerComponent: React.FC<Props> = ({trainingExtracted}) => {
+
+  const [showTraining, setShowTraining] = useState<ShowTraining[]>([]);
+
+  useEffect(() => {
+    // トレーニングデータを日付の降順にソート
+    trainingExtracted.sort((a, b) => {
+      if (a.date > b.date) return -1;
+      if (a.date < b.date) return 1;
+      return 0;
+    });
+
+    setShowTraining(trainingExtracted);
+  }, [trainingExtracted]);
 
   return (
     <div className="overflow-y-scroll max-h-80">
@@ -22,7 +35,7 @@ export const TrainingRecordViewerComponent: React.FC<Props> = ({showTrainingData
         </tr>
       </thead>
       <tbody className="text-gray-600 text-sm font-light">
-        {showTrainingData.map((data, index) => (
+        {showTraining.map((data, index) => (
           <tr key={index} className="odd:bg-white even:bg-gray-100">
             <td className="py-3 px-6">{data.date}</td>
             <td className="py-3 px-6">{data.part}</td>
